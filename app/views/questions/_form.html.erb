@@ -1,0 +1,36 @@
+
+<%= nested_form_for @question do |f| %>
+  <% if question.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(question.errors.count, "error") %> prohibited this question from being saved:</h2>
+
+      <ul>
+      <% question.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+ <div class="field">
+    <%= f.label :category_id %>
+    <%=select("question", "category_id", Category.all.collect {|p| [ p.category_name, p.id ] }, { include_blank: true }) %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :question_name %>
+    <%= f.text_field :question_name %>
+  </div>
+
+  
+
+  <%= f.fields_for :answers do |answers_form| %>
+  <%= answers_form.text_field :answer_name %>
+  <%= answers_form.link_to_remove "Remove this Question" %>
+<% end %>
+<%= f.link_to_add "ADD Answer", :answers %> 
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
